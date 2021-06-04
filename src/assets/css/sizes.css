@@ -1,0 +1,19 @@
+:root {
+    --v-audio-player-height: 290px;
+    --v-video-player-height: 25vh;
+
+    /* Assume line-height is unitless */
+    --v-theme-title-line-height-px: calc(var(--v-theme-title-line-height) * var(--v-theme-title-font-size));
+    --v-theme-title-featured-line-height-px: calc(var(--v-theme-title-featured-line-height) * var(--v-theme-title-featured-font-size));
+    --v-theme-title-featured-line-height-x2: calc(var(--v-theme-title-featured-line-height-px) * 2);
+     
+    --v-theme-caption-image-height: calc(var(--v-theme-title-featured-line-height-px) * 6);
+    
+    --v-theme-image-width: calc(var(--v-theme-title-line-height) * var(--v-theme-title-font-size) * 3 + 35px + var(--v-theme-date-font-size));
+    --v-theme-image-width-min: calc(var(--v-theme-image-width) / 4);
+
+    --v-theme-font-size-scaled: calc(var(--v-theme-font-size) * var(--v-scale-factor));
+    --v-theme-line-height-scaled: calc(var(--v-theme-font-size-scaled) * var(--v-theme-line-height));
+    --v-theme-title-font-size-scaled: calc(var(--v-theme-title-font-size) * var(--v-scale-factor));
+    --v-theme-title-line-height-scaled: calc(var(--v-theme-title-font-size-scaled) * var(--v-theme-title-line-height));
+}

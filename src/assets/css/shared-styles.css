@@ -1,0 +1,88 @@
+/* When in full screen video, set background to black */
+body.fullscreenVideo{
+    background-color: black;
+}
+
+/* Vuetify sets this to 0.54 for some reason! */
+.theme--light.v-icon {
+    opacity: 1;
+}
+
+.v-btn.x-large-button {
+    width: 70px !important;
+    height: 70px !important;
+}
+
+.v-btn.x-large-button .v-icon {
+    width: 48px !important;
+    height: 48px !important;
+}
+
+.v-btn.large-button {
+    width: 60px !important;
+    height: 60px !important;
+}
+
+.v-btn.large-button .v-icon {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.v-btn.medium-button {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.v-btn.medium-button .v-icon {
+    width: 20px !important;
+    height:20px !important;
+}
+
+.v-btn.small-button {
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.v-btn.small-button .v-icon {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.v-btn.tiny-button {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.v-btn.tiny-button .v-icon {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.v-icon.tiny {
+    width: 12px !important;
+    height: 12px !important;
+}
+
+.v-icon.small {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+
+/* Used for vertically centering spans */
+span.verticalCenter {
+    display:inline-block; 
+    vertical-align:middle;
+}
+  
+.listDivider {
+    height: 1px;
+    margin-left: 8px;
+    margin-right: 8px;
+    border-bottom: 1px solid #d8d8d8;
+}
+
+.mediaDurationText {
+    color: var(--v-secondary-base);
+    font-size: 14px;
+}

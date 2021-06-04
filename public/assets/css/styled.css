@@ -1,0 +1,46 @@
+:root {
+    --v-theme-font: 'ZCOOL KuaiLe', 'Roboto', sans-serif;
+    --v-theme-font-size: 15px;
+    --v-theme-line-height: 1.2;
+    --v-theme-title-font-size: 16px;
+    --v-theme-title-line-height: 1.3;
+    --v-theme-title-featured-font-size: 23px;
+    --v-theme-title-featured-line-height: 1.3;
+    --v-theme-date-font-size: 11px;
+}
+
+.featuredHeadline {
+    font-family: var(--v-theme-font);
+    font-size: var(--v-theme-title-featured-font-size);
+    font-weight: 700;
+    line-height: var(--v-theme-title-featured-line-height);
+}
+
+.smallHeadline {
+    font-family: var(--v-theme-font);
+    font-size: var(--v-theme-title-font-size);
+    font-weight: 700;
+    line-height: var(--v-theme-title-line-height);
+}
+
+.date, .feedTitle, .topic {
+    font-family: var(--v-theme-font);
+    font-size: var(--v-theme-date-font-size);
+    line-height: 1;
+}
+
+.storyText {
+    font-family: var(--v-theme-font);
+    font-size: var(--v-theme-font-size-scaled);
+    line-height: var(--v-theme-line-height-scaled);
+}
+
+.topic {
+    font-weight: 700;
+}
+
+.topicTitle {
+    font-family: var(--v-theme-font);
+    font-size: 18px;
+    line-height: 1;
+}
