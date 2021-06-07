@@ -2,6 +2,7 @@ module.exports = {
     appName: "AnyNews",
     basePath: "https://www.nasa.gov",
     enableCategories: true,
+    accentColor: "#6699cc",
     flavors: {
         default: {
             name: "NASA",

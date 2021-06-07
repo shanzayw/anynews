@@ -2,6 +2,7 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import config from '../config'
 
 var icons = {};
 
@@ -32,7 +33,7 @@ export default new Vuetify(
         light: {
           primary: '#232323',
           secondary: '#949494',
-          accent: '#0E813D',
+          accent: config.accentColor,
           cardBackground: '#ffffff',
           audioCardBackground: '#fafafa'
         }
