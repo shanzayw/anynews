@@ -45,8 +45,8 @@
       </v-flex>
 
       <v-flex @click="itemClicked()" v-bind:class="textClassObject" mt-0 pt-0 mb-0 pb-0 
-      style="display: flex; flex-direction: column;max-height: var(--v-image-actual-height);overflow:auto">
-        <div class="pa-0" style="flex:1 1 auto;display: flex; flex-direction: column;overflow:auto">
+      style="display: flex; flex-direction: column;max-height: var(--v-image-actual-height);overflow:none">
+        <div class="pa-0" style="flex:1 1 auto;display: flex; flex-direction: column;overflow:none">
           <div style="flex: 0 0 auto" ref="topic" class="topic" v-if="item.getCategoryName().length > 0">{{ item.getCategoryName() }}</div>
           <div style="flex: 1 1 auto;display:flex">
             <vue-resize-sensor style="flex: 1 1 auto" ref="itemTitleResizer" @resize="onTitleResize">
@@ -76,6 +76,7 @@ import ItemFavoriteButton from "./ItemFavoriteButton";
 import ItemModel from "../models/itemmodel";
 import DateView from "./DateView";
 import PlayButtonSquare from "./PlayButtonSquare";
+import VueResizeSensor from '@seregpie/vue-resize-sensor';
 
 export default {
   extends: ItemBase,
@@ -83,7 +84,8 @@ export default {
     DateView,
     PlayButtonSquare,
     ItemType,
-    ItemFavoriteButton
+    ItemFavoriteButton,
+    VueResizeSensor
   },
   props: {
     item: {

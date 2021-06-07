@@ -215,9 +215,6 @@ import moment from "moment";
 import Vue from "vue";
 import Vue2TouchEvents from "vue2-touch-events";
 
-import VueResizeSensor from '@seregpie/vue-resize-sensor';
-Vue.component(VueResizeSensor.name, VueResizeSensor);
-
 Vue.use(Vue2TouchEvents);
 
 export default {

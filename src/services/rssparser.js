@@ -287,7 +287,10 @@ export default class RSSParser {
 
             items.push(item);
 
-            if (item.imageSrc == null && item.content != null) {
+            // Set image from enclosure?
+            if (item.imageSrc == null && item.enclosure && item.enclosureType && item.enclosureType.startsWith("image/")) {
+                item.imageSrc = item.enclosure;
+            } else if (item.imageSrc == null && item.content != null) {
                 //Try to find an image in the content
                 var parseString = require('xml2js').parseString;
                 parseString("<root>" + item.content + "</root>", {
