@@ -6,12 +6,13 @@ module.exports = {
     flavors: {
         default: {
             name: "NASA",
-            localeName: "en",
+            translationKey: "en",
             defaultForLanguages: ["en"],
             cssFile: "./assets/css/default.css",
             services: [
                 {
-                    title: "Main service", url: "https://www.nasa.gov/rss/dyn/breaking_news.rss", categories: [
+                    url: "https://www.nasa.gov/rss/dyn/breaking_news.rss", 
+                    categories: [
                         { url: "https://www.nasa.gov/rss/dyn/onthestation_rss.rss" },
                         { url: "https://www.nasa.gov/rss/dyn/chandra_images.rss" }
                     ]
@@ -21,7 +22,7 @@ module.exports = {
         },
         styled: {
             name: "Styled",
-            localeName: "en",
+            translationKey: "en",
             defaultForLanguages: ["sv"],
             cssFile: "./assets/css/styled.css",
             fonts: {
@@ -31,7 +32,8 @@ module.exports = {
             },
             services: [
                 {
-                    title: "Main service", url: "https://www.nasa.gov/rss/dyn/breaking_news.rss", categories: [
+                    url: "/rss/dyn/breaking_news.rss",
+                    categories: [
                         { url: "https://www.nasa.gov/rss/dyn/onthestation_rss.rss" },
                         { url: "https://www.nasa.gov/rss/dyn/chandra_images.rss" }
                     ]

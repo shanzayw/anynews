@@ -50,18 +50,18 @@ if (config.enableCategories) {
         children: childRoutes
       },
       {
-        path: '/service/:name?',
+        path: '/flavor/:name?',
         redirect: to => {
           const name = to.params.name;
           if (name) {
             const service = config.flavors[name];
             if (service) {
-              console.log("Selecting service by param:", name);
+              console.log("Selecting flavor by param:", name);
               store.commit("setFlavor", name);
               store.state.onboarded = true;
 
               if ('static' in to.query) {
-                console.log("Service selection is static!");
+                console.log("Flavor selection is static!");
                 store.commit("setFlavorStatic", true);
               }
             }

@@ -350,8 +350,9 @@ export default {
         flavor = config.flavors["default"];
       }
 
-      // Set locale for translations
-      this.$i18n.locale = flavor.localeName;
+      // Set "locale" for translations. Basically the translation
+      // file filename.
+      this.$i18n.locale = flavor.translationKey;
 
       // Set RTL from config
       this.$vuetify.rtl = flavor.isRTL;
