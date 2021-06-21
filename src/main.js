@@ -10,10 +10,13 @@ import i18n from './lang'
 import logger from './defaultlogger'
 import db from './database'
 import VueViewer from 'v-viewer'
+import native from './plugins/native';
 Vue.config.productionTip = false
 
 let deferredPWAInstallPrompt = null;
 let hasShownPWAInstallPrompt = false;
+
+Vue.use(native);
 
 window.logger = logger;
 
@@ -44,16 +47,16 @@ Vue.directive('blur', {
 Vue.directive('renderToId', {
   componentUpdated: function (el, binding, ignoredVnode) {
     ignoredVnode.context.$nextTick(() => {
-    console.log("renderToId update:" + binding.arg + " Value: " + binding.value);
-    var container = (binding.value != "")
-      ? document.getElementById(binding.value)
-      : null
-    if (container != null) {
-      container.appendChild(el);
-    } else if (container == null && binding != "" && binding != null) {
-      console.error("renderToId: did not find render node!");
-    }
-  });
+      console.log("renderToId update:" + binding.arg + " Value: " + binding.value);
+      var container = (binding.value != "")
+        ? document.getElementById(binding.value)
+        : null
+      if (container != null) {
+        container.appendChild(el);
+      } else if (container == null && binding != "" && binding != null) {
+        console.error("renderToId: did not find render node!");
+      }
+    });
   },
   unbind: function (el) {
     if (el.parentNode) {
@@ -124,6 +127,7 @@ Vue.instance = new Vue({
   store,
   i18n,
   logger,
+  native,
   render: function (h) {
     let instance = h(App);
     this.appInstance = instance;
