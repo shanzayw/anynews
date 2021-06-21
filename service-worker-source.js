@@ -15,10 +15,6 @@ importScripts("./dexie.js");
 importScripts("./proxies.js");
 importScripts('./workbox/workbox-v5.1.3/workbox-sw.js');
 
-// Used inside "proxies.js" for proxying.
-//
-const useDevServer = false;
-
 workbox.setConfig({
   debug: true,
   modulePathPrefix: './workbox/workbox-v5.1.3/'

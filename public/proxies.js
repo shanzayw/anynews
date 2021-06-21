@@ -3,6 +3,7 @@
     class ProxyHandlerClass {
         constructor() {
             this.proxies =  [
+                // For development, use the development proxy set up in vue.config.js
                 "/localproxy"
                 // "https://your.proxy.here"
                 // "https://your.proxy2.here"
@@ -12,16 +13,11 @@
                 "https://www.nasa.gov"
             ];
             this.idxCurrentProxy = 0;
-            this.useDevServer = false;
             this.useStaticProxy = false; // Set to true to replace all URLs in incoming data
             this.setRandomProxy(); // Init to random
         }
 
         getCurrentProxy = function () {
-            if (this.useDevServer == true) {
-                // For development, use the development proxy set up in vue.config.js
-                return '/localproxy';
-            }
             return this.proxies[this.idxCurrentProxy];
         }
 
