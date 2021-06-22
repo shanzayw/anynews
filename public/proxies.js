@@ -2,7 +2,7 @@
 (function () {
     class ProxyHandlerClass {
         constructor() {
-            this.proxies =  [
+            this.proxies = [
                 // For development, use the development proxy set up in vue.config.js
                 "/localproxy"
                 // "https://your.proxy.here"
@@ -18,7 +18,7 @@
         }
 
         getCurrentProxy = function () {
-            return this.proxies[this.idxCurrentProxy];
+            return this.ensureTrailingSlash(this.proxies[this.idxCurrentProxy]);
         }
 
         setCurrentProxy = function (proxy) {
@@ -44,9 +44,17 @@
             return this.getCurrentProxy();
         }
 
+        ensureTrailingSlash(url) {
+            if (url.endsWith("/")) {
+                return url;
+            }
+            return url + "/";
+        }
+
         shouldProxyUrl(url) {
             if (url) {
-                for (const proxiedUrl of this.proxiedUrls) {
+                for (var p of this.proxiedUrls) {
+                    const proxiedUrl = this.ensureTrailingSlash(p);
                     if (url.startsWith(proxiedUrl)) {
                         return true;
                     }
@@ -57,12 +65,13 @@
 
         getProxiedUrl(url) {
             if (url) {
-                for (const proxiedUrl of this.proxiedUrls) {
+                for (var p of this.proxiedUrls) {
+                    const proxiedUrl = this.ensureTrailingSlash(p);
                     if (url.startsWith(proxiedUrl)) {
                         const proxy = this.getCurrentProxy();
                         var path = url.split("://")[1];
-                        path = path.substring(0, path.indexOf("/"));
-                        const urlRewritten = url.replace(proxiedUrl, proxy + '/' + path);
+                        path = path.substring(0, path.indexOf("/") + 1);
+                        const urlRewritten = url.replace(proxiedUrl, proxy + path);
                         console.log("getProxiedUrl rewrite: " + url + " -> " + urlRewritten);
                         return urlRewritten;
                     }
@@ -80,13 +89,14 @@
         staticReplace(data) {
             var result = data;
             // From: https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
-            var escapeRegExp = function(string) {
+            var escapeRegExp = function (string) {
                 return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
             };
-            for (const proxiedUrl of this.proxiedUrls) {
+            for (var p of this.proxiedUrls) {
+                const proxiedUrl = this.ensureTrailingSlash(p);
                 var proxiedUrlRegexp = escapeRegExp(proxiedUrl);
                 var regexp = new RegExp(proxiedUrlRegexp, 'gi');
-                result = result.replace(regexp, (match, ignoredp1, ignoredp2, ignoredp3, ignoredoffset, ignoredstring) => { return this.getCurrentProxy() + "/" + match.split("://")[1]});
+                result = result.replace(regexp, (match, ignoredp1, ignoredp2, ignoredp3, ignoredoffset, ignoredstring) => { return this.getCurrentProxy() + match.split("://")[1] });
             }
             return result;
         }
