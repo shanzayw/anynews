@@ -32,7 +32,7 @@ module.exports = {
         proxy: {
             "^/localproxy": {
                 changeOrigin: true,
-                followRedirects: true,
+                //followRedirects: true,
                 target: "localhost",
                 router: function (req) {
                     // Remove "/localproxy"
