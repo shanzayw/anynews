@@ -1,13 +1,15 @@
 <template>
   <v-app>
-
     <!-- TOAST FOR WHEN APP WAS UPDATED -->
     <v-snackbar
-        v-model="showAppUpdatedToast"
-        :timeout="showAppUpdatedToastTimeout"
-        top
-        @click="showAppUpdatedToast = false"
-      >{{ $t('app_updated_to_version', { version: $root.appVersionString }) }}</v-snackbar>
+      v-model="showAppUpdatedToast"
+      :timeout="showAppUpdatedToastTimeout"
+      top
+      @click="showAppUpdatedToast = false"
+      >{{
+        $t("app_updated_to_version", { version: $root.appVersionString })
+      }}</v-snackbar
+    >
 
     <router-view />
 
@@ -30,7 +32,7 @@
             </div>
           </v-row>
           <v-row align="center" justify="center">
-            <div class="processingText">{{processTitle}}</div>
+            <div class="processingText">{{ processTitle }}</div>
           </v-row>
         </v-container>
       </v-row>
@@ -45,10 +47,10 @@ import config from "./config";
 import rssparser from "./services/rssparser";
 import Printer from "./services/printer";
 import MediaCache from "./mediacache";
-import Splash from './views/Splash';
-import fontHelper from './services/fonthelper';
+import Splash from "./views/Splash";
+import fontHelper from "./services/fonthelper";
 
-const ProxyHandler = require('./services/proxy').default;
+const ProxyHandler = require("./services/proxy").default;
 
 var pdfMake = require("pdfmake/build/pdfmake.js");
 
@@ -56,14 +58,14 @@ document.documentElement.style.setProperty("--v-scale-factor", 1);
 
 // Make sure Array.isArray is defined
 if (!Array.isArray) {
-  Array.isArray = function(arg) {
+  Array.isArray = function (arg) {
     return Object.prototype.toString.call(arg) === "[object Array]";
   };
 }
 
 if (!String.hashCode) {
   console.log("Defining a hash function");
-  String.hashCode = function(str) {
+  String.hashCode = function (str) {
     var hash = 0,
       i = 0,
       len = str.length;
@@ -77,7 +79,7 @@ if (!String.hashCode) {
 export default {
   name: "App",
   components: {
-    Splash
+    Splash,
   },
   mounted() {
     console.log("App mounted");
@@ -86,7 +88,7 @@ export default {
     } else {
       this.$logger.logAppFirstLoad();
     }
-    this.$axios.onProxyChanged = function(newProxy) {  
+    this.$axios.onProxyChanged = function (newProxy) {
       console.log("Proxy changed, store: " + newProxy);
       this.$store.commit("setCurrentProxy", newProxy);
     }.bind(this);
@@ -96,20 +98,20 @@ export default {
 
     const self = this;
     this.storeWatchObject = this.$store.watch(
-      state => state.flavor,
+      (state) => state.flavor,
       (ignoredNewValue, ignoredOldValue) => {
         console.log("Flavor is changing");
         this.updateFlavor();
       }
     );
     this.storeWatchObjectTextSize = this.$store.watch(
-      state => state.textSizeAdjustment,
+      (state) => state.textSizeAdjustment,
       (newValue, ignoredOldValue) => {
         this.textSizeUpdated(newValue);
       }
     );
     this.storeWatchObjectFullScreenItemIndex = this.$store.watch(
-      state => state.fullScreenItemIndex,
+      (state) => state.fullScreenItemIndex,
       (newValue, ignoredOldValue) => {
         if (newValue != -1) {
           const item = self.$store.state.fullScreenItems[newValue];
@@ -118,21 +120,24 @@ export default {
       }
     );
     this.storeWatchFullScreenVideo = this.$store.watch(
-      state => state.showingFullScreenVideo,
+      (state) => state.showingFullScreenVideo,
       (newValue, ignoredOldValue) => {
         if (newValue) {
           document.body.classList.add(["fullscreenVideo"]);
         } else {
-          document.body.classList.remove(["fullscreenVideo"])
+          document.body.classList.remove(["fullscreenVideo"]);
         }
       }
     );
     document.addEventListener("swUpdated", this.showAppUpdated);
     document.addEventListener("visibilitychange", this.visibilityChanged);
     if (navigator.serviceWorker) {
-      navigator.serviceWorker.addEventListener('controllerchange', this.controllerChanged);
+      navigator.serviceWorker.addEventListener(
+        "controllerchange",
+        this.controllerChanged
+      );
       if (navigator.serviceWorker.controller != null) {
-        console.log("Service worker already controlling this page!")
+        console.log("Service worker already controlling this page!");
         this.serviceWorkerLoaded = true;
       }
     } else {
@@ -142,15 +147,15 @@ export default {
       this.serviceWorkerFallbackLoaded = true;
       this.updateFlavor();
     }
-    
+
     // Insert default font definition
     const roboto = {
       normal: "Roboto-Regular.ttf",
       bold: "Roboto-Bold.ttf",
       italics: "Roboto-Italic.ttf",
-      bolditalics: "Roboto-BoldItalic.ttf"
+      bolditalics: "Roboto-BoldItalic.ttf",
     };
-    fontHelper.generateFontFaceImports({Roboto: roboto}, "defaultFont");
+    fontHelper.generateFontFaceImports({ Roboto: roboto }, "defaultFont");
 
     this.updateFlavor();
     this.textSizeUpdated(this.$store.state.textSizeAdjustment);
@@ -159,7 +164,10 @@ export default {
   beforeDestroy() {
     document.removeEventListener("swUpdated", this.showAppUpdated);
     document.removeEventListener("visibilitychange", this.visibilityChanged);
-    navigator.serviceWorker.removeEventListener('controllerchange', this.controllerChanged);
+    navigator.serviceWorker.removeEventListener(
+      "controllerchange",
+      this.controllerChanged
+    );
   },
 
   destroyed() {
@@ -188,7 +196,7 @@ export default {
       processCancelCallback: null,
       processTitle: "Working, please wait...",
       showAppUpdatedToast: false,
-      showAppUpdatedToastTimeout: 5000
+      showAppUpdatedToastTimeout: 5000,
     };
   },
 
@@ -223,7 +231,7 @@ export default {
           navigator
             .share({
               title: item.title,
-              url: link
+              url: link,
             })
             .then(() => {
               console.log("Thanks for sharing!");
@@ -246,7 +254,7 @@ export default {
 
     blobToBase64(blob, callback) {
       var reader = new FileReader();
-      reader.onload = function() {
+      reader.onload = function () {
         var dataUrl = reader.result;
         var base64 = dataUrl.split(",")[1];
         callback(base64);
@@ -256,15 +264,23 @@ export default {
 
     downloadMedia(item) {
       if (item.enclosure != null) {
-        MediaCache.getMedia(item.enclosure, true, function(url) {
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = item.title || "Download";
-          link.click();
-          MediaCache.releaseMedia(url);
-        }, function() {
-          this.$logger.logArticleDownload(item, item.hasVideoAttachment() ? "video" : "audio");
-        }.bind(this));
+        MediaCache.getMedia(
+          item.enclosure,
+          true,
+          function (url) {
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = item.title || "Download";
+            link.click();
+            MediaCache.releaseMedia(url);
+          },
+          function () {
+            this.$logger.logArticleDownload(
+              item,
+              item.hasVideoAttachment() ? "video" : "audio"
+            );
+          }.bind(this)
+        );
       }
     },
 
@@ -288,51 +304,51 @@ export default {
         normal: "Roboto-Regular.ttf",
         bold: "Roboto-Bold.ttf",
         italics: "Roboto-Italic.ttf",
-        bolditalics: "Roboto-BoldItalic.ttf"
+        bolditalics: "Roboto-BoldItalic.ttf",
       };
 
       // Transform all font paths to <website>/assets/fonts/<font>
       fontKeys = Object.keys(fonts);
-        for (var key of fontKeys) {
-          var fontObject = fonts[key];
-          if (!fontObject.normal) {
-            continue;
-          }
-          if (!fontObject.bold) {
-            fontObject.bold = fontObject.normal;
-          }
-          if (!fontObject.italics) {
-            fontObject.italics = fontObject.normal;
-          }
-          if (!fontObject.bolditalics) {
-            fontObject.bolditalics = fontObject.bold;
-          }
-          var prefix = window.location.origin + window.location.pathname;
-          prefix = prefix.substring(0, prefix.lastIndexOf("/"));
-          prefix = prefix + "/assets/fonts/";
-          for (var t of Object.keys(fontObject)) {
-            fontObject[t] = prefix + fontObject[t];
-          }
+      for (var key of fontKeys) {
+        var fontObject = fonts[key];
+        if (!fontObject.normal) {
+          continue;
         }
+        if (!fontObject.bold) {
+          fontObject.bold = fontObject.normal;
+        }
+        if (!fontObject.italics) {
+          fontObject.italics = fontObject.normal;
+        }
+        if (!fontObject.bolditalics) {
+          fontObject.bolditalics = fontObject.bold;
+        }
+        var prefix = window.location.origin + window.location.pathname;
+        prefix = prefix.substring(0, prefix.lastIndexOf("/"));
+        prefix = prefix + "/assets/fonts/";
+        for (var t of Object.keys(fontObject)) {
+          fontObject[t] = prefix + fontObject[t];
+        }
+      }
 
-      new Printer(item, function(docDefinition) {
-          if (fonts != null) {
-            for (const styleName in docDefinition.styles) {
-              var style = docDefinition.styles[styleName];
-              style.font = font;
-            }
-            docDefinition.defaultStyle = docDefinition.defaultStyle || {};
-            Object.assign(docDefinition.defaultStyle, { font: "Roboto" });
+      new Printer(item, function (docDefinition) {
+        if (fonts != null) {
+          for (const styleName in docDefinition.styles) {
+            var style = docDefinition.styles[styleName];
+            style.font = font;
           }
-          // vfs = vfs || {};
-          // Object.assign(vfs, pdfMake.vfs);
-          docDefinition.info = {
-            title: item.title
-          };
-          pdfMake
-            .createPdf(docDefinition, null, fonts)
-            .download(item.title + ".pdf");
-        });
+          docDefinition.defaultStyle = docDefinition.defaultStyle || {};
+          Object.assign(docDefinition.defaultStyle, { font: "Roboto" });
+        }
+        // vfs = vfs || {};
+        // Object.assign(vfs, pdfMake.vfs);
+        docDefinition.info = {
+          title: item.title,
+        };
+        pdfMake
+          .createPdf(docDefinition, null, fonts)
+          .download(item.title + ".pdf");
+      });
     },
 
     updateFlavor() {
@@ -392,7 +408,9 @@ export default {
       this.$store.commit("setCurrentFeedItems", null);
       this.$store.commit(
         "clearCategories",
-        (service.categories != null && config.enableCategories) ? service.categories.length : 0
+        service.categories != null && config.enableCategories
+          ? service.categories.length
+          : 0
       );
 
       this.refreshFeeds();
@@ -403,52 +421,69 @@ export default {
       document.documentElement.style.setProperty("--v-scale-factor", factor);
     },
 
+    // Helper to strip spaces from URLs. In notmal circumstances, maybe not that useful, but for data-URLs might
+    // be good.
+    stripSpace(url) {
+      if (url) {
+        return url.replace(/(\r\n|\n|\r|\s)/gm, "");
+      }
+      return url;
+    },
+
     refreshFeeds() {
       let flavor = config.flavors[this.$store.state.flavor];
       let service = flavor.services[0];
 
       const self = this;
-      rssparser.fetchUrl(service.url, function(feed, items) {
-        self.$store.commit("setCurrentFeedTitle", feed.title);
-        self.$store.commit("setCurrentFeedItems", items);
-        if (config.enableCategories && service.categories != null) {
-          for (var i = 0; i < service.categories.length; i++) {
-            const index = i;
-            var category = service.categories[i];
-            let url = category.url;
-            rssparser.fetchUrl(url, function(feed, items) {
-              //              var catTitle = feed.category;
-              var catTitle = feed.title;
-              if (catTitle == null || catTitle.length == 0) {
-                catTitle = "Category " + (index + 1);
-              }
+      rssparser.fetchUrl(
+        service.url,
+        this.stripSpace(service.defaultImage),
+        function (feed, items) {
+          self.$store.commit("setCurrentFeedTitle", feed.title);
+          self.$store.commit("setCurrentFeedItems", items);
+          if (config.enableCategories && service.categories != null) {
+            for (var i = 0; i < service.categories.length; i++) {
+              const index = i;
+              var category = service.categories[i];
+              let url = category.url;
+              rssparser.fetchUrl(
+                url,
+                self.stripSpace(category.defaultImage || service.defaultImage),
+                function (feed, items) {
+                  //              var catTitle = feed.category;
+                  var catTitle = feed.title;
+                  if (catTitle == null || catTitle.length == 0) {
+                    catTitle = "Category " + (index + 1);
+                  }
 
-              // Mark all items with this category!
-              if (items != null) {
-                for (var i = 0; i < items.length; i++) {
-                  const item = items[i];
-                  item.category = catTitle;
+                  // Mark all items with this category!
+                  if (items != null) {
+                    for (var i = 0; i < items.length; i++) {
+                      const item = items[i];
+                      item.category = catTitle;
+                    }
+                  }
+
+                  self.$store.commit("addCategoryItems", {
+                    category: catTitle,
+                    index: index,
+                    feed: feed,
+                    items: items,
+                  });
                 }
-              }
-
-              self.$store.commit("addCategoryItems", {
-                category: catTitle,
-                index: index,
-                feed: feed,
-                items: items
-              });
-            });
+              );
+            }
           }
         }
-      });
-    }
+      );
+    },
   },
 
   computed: {
     flavorName() {
       return this.$store.state.flavor;
-    }
-  }
+    },
+  },
 };
 </script>
 

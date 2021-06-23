@@ -1,21 +1,35 @@
 <template>
   <div :style="cssProps">
     <div class="imageBackdrop" @click="itemClicked()">
-      <v-layout ref="card" class="titleContainer" justify-space-between align-end ma-0 pa-0 fill-height>
+      <v-layout
+        ref="card"
+        class="titleContainer"
+        justify-space-between
+        align-end
+        ma-0
+        pa-0
+        fill-height
+      >
         <v-flex ma-0 pa-0>
-          <div class="topic featured text-uppercase">{{ item.getCategoryName() }}</div>
+          <div class="topic featured text-uppercase">
+            {{ item.getCategoryName() }}
+          </div>
           <div>
             <div class="featuredHeadline">{{ item.title }}</div>
             <div>
-                <PlayButtonSquare
-                  v-if="playable"
-                  :item="item"
-                  playerColor="white"
-                  showMediaPlayer
-                  class="playButton"
-                  v-on:playStarted="onPlayStarted($event)"
-                />
-              <DateView class="date verticalCenter" :date="item.pubDate" ago />&nbsp;
+              <PlayButtonSquare
+                v-if="playable"
+                :item="item"
+                playerColor="white"
+                showMediaPlayer
+                class="playButton"
+                v-on:playStarted="onPlayStarted($event)"
+              />
+              <DateView
+                class="date verticalCenter"
+                :date="item.pubDate"
+                ago
+              />&nbsp;
               <ItemType :item="item" color="white" />
             </div>
           </div>
@@ -37,15 +51,15 @@ export default {
   components: {
     DateView,
     PlayButtonSquare,
-    ItemType
+    ItemType,
   },
   computed: {
     cssProps() {
       return {
-        "--v-category-image": "url(" + this.imageSrc + ")"
+        "--v-category-image": "url(" + this.imageSrc + ")",
       };
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -80,14 +94,15 @@ export default {
 }
 
 .titleContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   /* min-height: var(--v-theme-caption-image-height);
   max-height: 70vh; */
-  padding: 60px var(--v-item-gutter-h) calc(var(--v-item-gutter-v) / 2) var(--v-item-gutter-h) !important;
+  padding: 60px var(--v-item-gutter-h) calc(var(--v-item-gutter-v) / 2)
+    var(--v-item-gutter-h) !important;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
   overflow: hidden;
 }

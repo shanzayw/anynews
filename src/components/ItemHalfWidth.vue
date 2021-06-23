@@ -1,12 +1,12 @@
 <template>
-  <div style="display: flex;flex-direction: column;flex-grow:1">
+  <div style="display: flex; flex-direction: column; flex-grow: 1">
     <v-img
       style="flex: 0 0 auto"
-      :aspect-ratio="4/3"
+      :aspect-ratio="4 / 3"
       class="image ma-0 mb-2 pa-0 text-center"
       :src="imageSrc"
       @error="$logger.logFetchError(imageSrc)"
-      v-on="{click: itemClicked }"
+      v-on="{ click: itemClicked }"
     >
       <v-container ma-0 pa-0 fluid fill-height align-end>
         <v-row ma-0 pa-0 no-gutters>
@@ -24,17 +24,45 @@
       </v-container>
     </v-img>
 
-      <div @click="itemClicked()" ml-2 mr-2 mt-0 pt-0 xs12 style="flex: 0 0 auto"
-          v-if="item.getCategoryName().length > 0"
-          class="topic verticalCenter text-start text-truncate">
-          {{ item.getCategoryName() }}
-      </div>
+    <div
+      @click="itemClicked()"
+      ml-2
+      mr-2
+      mt-0
+      pt-0
+      xs12
+      style="flex: 0 0 auto"
+      v-if="item.getCategoryName().length > 0"
+      class="topic verticalCenter text-start text-truncate"
+    >
+      {{ item.getCategoryName() }}
+    </div>
 
-      <div @click="itemClicked()" ml-2 mr-2 mt-0 pt-0 xs12 style="flex: 1 1 auto" class="smallHeadline">{{ item.title }}</div>
-      <div @click="itemClicked()" ml-2 mr-2 mt-0 pt-0 xs12 style="flex: 0 0 auto" class="nobreak">
-        <DateView class="date verticalCenter" :date="item.pubDate" ago />&nbsp;
-        <ItemType :item="item" />
-      </div>
+    <div
+      @click="itemClicked()"
+      ml-2
+      mr-2
+      mt-0
+      pt-0
+      xs12
+      style="flex: 1 1 auto"
+      class="smallHeadline"
+    >
+      {{ item.title }}
+    </div>
+    <div
+      @click="itemClicked()"
+      ml-2
+      mr-2
+      mt-0
+      pt-0
+      xs12
+      style="flex: 0 0 auto"
+      class="nobreak"
+    >
+      <DateView class="date verticalCenter" :date="item.pubDate" ago />&nbsp;
+      <ItemType :item="item" />
+    </div>
   </div>
 </template>
 
@@ -50,8 +78,8 @@ export default {
   components: {
     DateView,
     PlayButtonSquare,
-    ItemType
-  }
+    ItemType,
+  },
 };
 </script>
 

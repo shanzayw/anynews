@@ -8,12 +8,12 @@ const ProxyHandler = require('./proxy').default;
 
 export default class RSSParser {
 
-    static fetchCategoryUrl(url, callback) {
+    static fetchCategoryUrl(url, defaultImage, callback) {
         // TODO - add cat requests to array, so we can cancel them if main feed changes?
-        return RSSParser.fetchUrl(url, callback);
+        return RSSParser.fetchUrl(url, defaultImage, callback);
     }
 
-    static fetchUrl(url, callback) {
+    static fetchUrl(url, defaultImage, callback) {
         const self = this;
         if (!url) {
             callback(null, null);
@@ -39,7 +39,7 @@ export default class RSSParser {
                             if (relativePath == "index.rss") {
                                 promises.push(file.async("string")
                                     .then(function (text) {
-                                        result = self.parseFeed(self, text, url);
+                                        result = self.parseFeed(self, text, url, defaultImage);
                                     }));
                             } else if (relativePath.startsWith("enc/") && !file.dir) {
                                 let url = "file://" + relativePath;
@@ -77,10 +77,10 @@ export default class RSSParser {
                 method: "get",
                 url: url
                 //headers: {common: {'x-destination': 'feed'}}
-              };
+            };
             window.axios(options)
                 .then(function (response) {
-                    let result = self.parseFeed(self, response.data, url);
+                    let result = self.parseFeed(self, response.data, url, defaultImage);
                     callback(result.feed, result.items);
                 })
                 .catch(function (error) {
@@ -93,7 +93,7 @@ export default class RSSParser {
         }
     }
 
-    static parseFeed(self, data, url) {
+    static parseFeed(self, data, url, defaultImage) {
         // Get the parseString function
         var parseString = require('xml2js').parseString;
 
@@ -106,9 +106,9 @@ export default class RSSParser {
         parseString(data, { explicitArray: false }, function (ignoredError, result) {
             //console.log(result);
             if (result["rdf:RDF"] != null) {
-                parseResult = self.parseRDF(self, result, url);
+                parseResult = self.parseRDF(self, result, url, defaultImage);
             } else if (result.rss != null) {
-                parseResult = self.parseRSS(self, result, url);
+                parseResult = self.parseRSS(self, result, url, defaultImage);
             }
         });
         console.log(parseResult);
@@ -119,21 +119,21 @@ export default class RSSParser {
         return parseResult;
     }
 
-    static parseRSS(self, result, feedUrl) {
-        return self.parseData(self, result.rss.channel, result.rss.channel, feedUrl);
+    static parseRSS(self, result, feedUrl, feedDefaultImage) {
+        return self.parseData(self, result.rss.channel, result.rss.channel, feedUrl, feedDefaultImage);
     }
 
-    static parseRDF(self, result, feedUrl) {
-        return self.parseData(self, result["rdf:RDF"].channel, result["rdf:RDF"], feedUrl);
+    static parseRDF(self, result, feedUrl, feedDefaultImage) {
+        return self.parseData(self, result["rdf:RDF"].channel, result["rdf:RDF"], feedUrl, feedDefaultImage);
     }
 
-    static getText = function(elt) {
-        if (typeof(elt) === 'string') return elt;
-        if (typeof(elt) === 'object' && Object.prototype.hasOwnProperty.call(elt, '_')) return elt._;
+    static getText = function (elt) {
+        if (typeof (elt) === 'string') return elt;
+        if (typeof (elt) === 'object' && Object.prototype.hasOwnProperty.call(elt, '_')) return elt._;
         return null;
     }
 
-    static parseData(self, channelElement, itemParentElement, feedUrl) {
+    static parseData(self, channelElement, itemParentElement, feedUrl, feedDefaultImage) {
         var items = [];
 
         var feed = new FeedModel();
@@ -169,7 +169,7 @@ export default class RSSParser {
                 } else {
                     feed.category = self.getText(feedCategories);
                 }
-            }    
+            }
         }
 
         // Make array if not already
@@ -196,7 +196,7 @@ export default class RSSParser {
             item.content = self.getText(i["content:encoded"]);
             var mediaContent = i["media:content"];
 
-            const handleMediaContent = function(item, mediaContent) {
+            const handleMediaContent = function (item, mediaContent) {
                 const medium = mediaContent.$.medium;
                 const type = mediaContent.$.type;
                 const url = mediaContent.$.url;
@@ -213,7 +213,7 @@ export default class RSSParser {
                     if (!isNullOrUndefined(thumb)) {
                         item.imageSrc = thumb.$.url;
                     }
-                } else { 
+                } else {
                     item.imageSrc = mediaContent.$.url;
                 }
             };
@@ -312,6 +312,11 @@ export default class RSSParser {
                 });
             }
 
+            // Still no image? Use default feed one if set.
+            if (!item.imageSrc) {
+                item.imageSrc = feedDefaultImage;
+            }
+
             if (item.content != null) {
                 // Remove "width" and "height" from youtube embeds and wrap them in a
                 // <div class="videoWrapper">
@@ -325,13 +330,13 @@ export default class RSSParser {
         const uniqueItems = [];
         const map = new Map();
         for (const item of items) {
-            if(!map.has(item.guid)) {
+            if (!map.has(item.guid)) {
                 map.set(item.guid, true);    // set any value to Map
                 uniqueItems.push(item);
             } else {
                 console.log("Ignoring item: " + item.title);
             }
         }
-        return {feed: feed, items: uniqueItems};
+        return { feed: feed, items: uniqueItems };
     }
 }
