@@ -12,6 +12,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.10.4",
     "@vue/composition-api": "^1.0.0-rc.12",
+    "clean-insights-sdk": "^2.4.2",
     "core-js": "^3.15.0",
     "dexie": "^3.0.3",
     "hls.js": "^0.13.2",

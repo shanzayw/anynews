@@ -3,25 +3,37 @@
     <div>
       <h3>Onboarding</h3>
     </div>
-    <div class="mt-2 mb-0 ml-4 mr-4 language-item" v-for="service in services" :key="service.value">
-      <v-btn block :color="selected == service.value ? 'accent' : '#efefef'" @click="selected = service.value" :class="service.value" :style="styleForService(service.value)">{{ service.name }}</v-btn>
+    <div
+      class="mt-2 mb-0 ml-4 mr-4 language-item"
+      v-for="service in services"
+      :key="service.value"
+    >
+      <v-btn
+        block
+        :color="selected == service.value ? 'accent' : '#efefef'"
+        @click="selected = service.value"
+        :class="service.value"
+        :style="styleForService(service.value)"
+        >{{ service.name }}</v-btn
+      >
     </div>
     <div class="ma-4">
-      <v-btn block color="primary" @click="useConfig(selected)">{{ $t("GO") }}</v-btn>
+      <v-btn block color="primary" @click="useConfig(selected)">{{
+        $t("GO")
+      }}</v-btn>
     </div>
   </v-content>
 </template>
 
 <script>
-
-import config from '../config';
+import config from "../config";
 import fontHelper from "../services/fonthelper";
 
 export default {
   name: "Onboarding",
   data() {
     return {
-      selected: "default"
+      selected: "default",
     };
   },
   mounted() {
@@ -47,14 +59,14 @@ export default {
   },
   computed: {
     services() {
-      return Object.keys(config.flavors).map(function(key) {
+      return Object.keys(config.flavors).map(function (key) {
         return { name: config.flavors[key].name, value: key };
       });
     },
-    language: function() {
+    language: function () {
       var lang = navigator.language || navigator.userLanguage;
       return lang.toLowerCase();
-    }
+    },
   },
   methods: {
     styleForService(svc) {
@@ -63,7 +75,7 @@ export default {
     },
 
     useConfig(config) {
-      this.$logger.logLanguageSelect(config, false);
+      this.$logger.logFlavorSelect(config, false);
       this.$store.commit("setFlavor", config);
       this.done();
     },
@@ -71,8 +83,8 @@ export default {
     done() {
       this.$root.onboarded = true;
       this.$root.$router.replace("/");
-    }
-  }
+    },
+  },
 };
 </script>
 

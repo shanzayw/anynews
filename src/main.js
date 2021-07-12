@@ -7,7 +7,7 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import i18n from './lang'
-import logger from './defaultlogger'
+import logger from './logger'
 import db from './database'
 import VueViewer from 'v-viewer'
 import native from './plugins/native';

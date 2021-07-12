@@ -217,7 +217,7 @@ export default {
       this.$store.commit("setCurrentAppVersion", newVersion);
       if (oldVersion != null && newVersion != oldVersion) {
         // Log version updated
-        this.$logger.logAppUpdated();
+        this.$logger.logAppUpdated(newVersion);
         this.showAppUpdatedToast = true;
       }
     },

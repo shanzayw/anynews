@@ -3,6 +3,12 @@ module.exports = {
     basePath: "https://www.nasa.gov",
     enableCategories: true,
     accentColor: "#6699cc",
+    analytics: {
+        type: "console",
+        enabled: false,
+        config: {
+        }
+    },
     flavors: {
         default: {
             name: "NASA",
@@ -11,7 +17,7 @@ module.exports = {
             cssFile: "./assets/css/default.css",
             services: [
                 {
-                    url: "https://www.nasa.gov/rss/dyn/breaking_news.rss", 
+                    url: "https://www.nasa.gov/rss/dyn/breaking_news.rss",
                     //defaultImage: "<URL or base64 Data-URL>",
                     categories: [
                         { url: "https://www.nasa.gov/rss/dyn/onthestation_rss.rss" },

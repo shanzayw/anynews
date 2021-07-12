@@ -99,7 +99,7 @@ export default {
         return this.$store.state.flavor;
       },
       set(val) {
-        this.$logger.logLanguageSelect(val, true);
+        this.$logger.logFlavorSelect(val, true);
         this.$store.commit("setFlavor", val);
       },
     },
