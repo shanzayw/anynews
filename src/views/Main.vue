@@ -84,10 +84,7 @@ export default {
       }
       var flavor = config.flavors[this.$store.state.flavor || "default"];
       console.log("Flavor", flavor);
-      return (
-        flavor.services[0].categories &&
-        flavor.services[0].categories.length > 0
-      );
+      return flavor.categories && flavor.categories.length > 0;
     },
   },
   watch: {

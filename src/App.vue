@@ -403,13 +403,12 @@ export default {
       this.$root.mediaPlayerDocked = false;
 
       // Clear old items
-      let service = flavor.services[0];
       this.$store.commit("setCurrentFeedTitle", "");
       this.$store.commit("setCurrentFeedItems", null);
       this.$store.commit(
         "clearCategories",
-        service.categories != null && config.enableCategories
-          ? service.categories.length
+        flavor.categories != null && config.enableCategories
+          ? flavor.categories.length
           : 0
       );
 
@@ -432,23 +431,22 @@ export default {
 
     refreshFeeds() {
       let flavor = config.flavors[this.$store.state.flavor];
-      let service = flavor.services[0];
 
       const self = this;
       rssparser.fetchUrl(
-        service.url,
-        this.stripSpace(service.defaultImage),
+        flavor.url,
+        this.stripSpace(flavor.defaultImage),
         function (feed, items) {
           self.$store.commit("setCurrentFeedTitle", feed.title);
           self.$store.commit("setCurrentFeedItems", items);
-          if (config.enableCategories && service.categories != null) {
-            for (var i = 0; i < service.categories.length; i++) {
+          if (config.enableCategories && flavor.categories != null) {
+            for (var i = 0; i < flavor.categories.length; i++) {
               const index = i;
-              var category = service.categories[i];
+              var category = flavor.categories[i];
               let url = category.url;
               rssparser.fetchUrl(
                 url,
-                self.stripSpace(category.defaultImage || service.defaultImage),
+                self.stripSpace(category.defaultImage || flavor.defaultImage),
                 function (feed, items) {
                   //              var catTitle = feed.category;
                   var catTitle = feed.title;

@@ -261,7 +261,6 @@ import DateView from "../components/DateView";
 import db from "../database";
 import router from "../router";
 import moment from "moment";
-import config from "../config";
 
 import Vue from "vue";
 import Vue2TouchEvents from "vue2-touch-events";
