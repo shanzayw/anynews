@@ -3,9 +3,14 @@
     <v-app-bar
       flat
       :absolute="useFadingAppBar"
-      :class="{ 'mainListHeader': !useFadingAppBar, 'transparentAppBar': useFadingAppBar }"
+      :class="{
+        mainListHeader: !useFadingAppBar,
+        transparentAppBar: useFadingAppBar,
+      }"
     >
-      <v-icon v-if="useFadingAppBar" color="#158E45">$vuetify.icons.logo</v-icon>
+      <v-icon v-if="useFadingAppBar" color="#158E45"
+        >$vuetify.icons.logo</v-icon
+      >
       <v-icon v-else color="accent">$vuetify.icons.logoInverted</v-icon>
       <!-- <v-spacer />
       <v-toolbar-title
@@ -19,7 +24,11 @@
     </v-app-bar>
 
     <div
-      :class="{'mainItemList': useFadingAppBar, 'mainItemListMinusAppBar': !useFadingAppBar, 'ma-0': true}"
+      :class="{
+        mainItemList: useFadingAppBar,
+        mainItemListMinusAppBar: !useFadingAppBar,
+        'ma-0': true,
+      }"
       v-on:scroll="onHeaderScroll"
       ref="mainItemList"
     >
@@ -27,15 +36,21 @@
       <div
         v-if="headerType != null"
         class="mainListHeader pl-2 pr-2 pt-0 pb-0"
-        style="position: sticky; top: 0px; z-index: 5;"
+        style="position: sticky; top: 0px; z-index: 5"
       >
         <div v-if="headerType == 'saved'" class="tagContainer">
           <span
             v-for="tag in headerTagsSaved"
             :key="tag.value"
-            :class="{'text-uppercase': true, 'topicTitle': true, 'topicTitleSelected': currentHeaderTag != null && currentHeaderTag == tag}"
+            :class="{
+              'text-uppercase': true,
+              topicTitle: true,
+              topicTitleSelected:
+                currentHeaderTag != null && currentHeaderTag == tag,
+            }"
             @click="onHeaderTag(tag)"
-          >{{ tag.name }}</span>
+            >{{ tag.name }}</span
+          >
         </div>
 
         <div
@@ -43,23 +58,35 @@
           class="tagContainer"
         >
           <!-- No categories loaded, just insert a hidden placeholder here -->
-          <span :class="{'text-uppercase': true, 'topicTitle': true}">&nbsp;</span>
+          <span :class="{ 'text-uppercase': true, topicTitle: true }"
+            >&nbsp;</span
+          >
         </div>
 
         <div v-else-if="headerType == 'categories'" class="tagContainer">
           <span
             v-for="tag in headerTagsCategories"
             :key="tag.value"
-            :class="{'text-uppercase': true, 'topicTitle': true, 'topicTitleSelected': currentHeaderTag != null && currentHeaderTag.value == tag.value}"
+            :class="{
+              'text-uppercase': true,
+              topicTitle: true,
+              topicTitleSelected:
+                currentHeaderTag != null && currentHeaderTag.value == tag.value,
+            }"
             @click="onHeaderTag(tag)"
-          >{{ tag.name }}</span>
+            >{{ tag.name }}</span
+          >
         </div>
       </div>
       <!-- End of header -->
 
       <!-- If empty saved tab -->
       <v-container
-        v-if="currentHeaderTag != null && currentHeaderTag.value.startsWith('saved_') && filteredItems.length == 0"
+        v-if="
+          currentHeaderTag != null &&
+          currentHeaderTag.value.startsWith('saved_') &&
+          filteredItems.length == 0
+        "
         fluid
       >
         <v-layout fill-height justify-center align-center>
@@ -69,15 +96,21 @@
                 class="ma-5 pa-0"
                 style="width: 64px; height: 64px"
                 color="green"
-              >$vuetify.icons.favorites</v-icon>
+                >$vuetify.icons.favorites</v-icon
+              >
             </div>
-            <div class="text-center">{{ this.$t('saved_placeholder') }}</div>
+            <div class="text-center">{{ this.$t("saved_placeholder") }}</div>
           </v-flex>
         </v-layout>
       </v-container>
 
       <!-- If empty categories tab -->
-      <v-container v-else-if="headerType == 'categories' && headerTagsCategories.length == 0" fluid>
+      <v-container
+        v-else-if="
+          headerType == 'categories' && headerTagsCategories.length == 0
+        "
+        fluid
+      >
         <v-layout fill-height justify-center align-center>
           <v-flex>
             <div class="text-center">
@@ -85,9 +118,10 @@
                 class="ma-5 pa-0"
                 style="width: 64px; height: 64px"
                 color="green"
-              >$vuetify.icons.favorites</v-icon>
+                >$vuetify.icons.favorites</v-icon
+              >
             </div>
-            <div class="text-center">{{ $t('categories_placeholder') }}</div>
+            <div class="text-center">{{ $t("categories_placeholder") }}</div>
           </v-flex>
         </v-layout>
       </v-container>
@@ -99,7 +133,10 @@
         v-on:playItem="playItem($event)"
         v-on:playStarted="onPlayStarted($event)"
         class="pt-0 ma-0"
-        :showFavorites="currentHeaderTag != null && currentHeaderTag.value.startsWith('saved_')"
+        :showFavorites="
+          currentHeaderTag != null &&
+          currentHeaderTag.value.startsWith('saved_')
+        "
       />
       <ItemList
         v-else
@@ -114,7 +151,11 @@
 
     <div
       class="videoItemList"
-      v-if="$root.mediaShowList && $root.mediaPlayerItem != null && $root.mediaPlayer.isVideo"
+      v-if="
+        $root.mediaShowList &&
+        $root.mediaPlayerItem != null &&
+        $root.mediaPlayer.isVideo
+      "
     >
       <!-- Video player, current item info (including share) and a list of videos -->
       <PlayControllerVideo
@@ -130,11 +171,14 @@
         <v-layout xs12>
           <v-flex xs12 ml-2 mr-2 mt-0 pt-0>
             <div>
-              <DateView class="date verticalCenter" :date="$root.mediaPlayerItem.pubDate" />
+              <DateView
+                class="date verticalCenter"
+                :date="$root.mediaPlayerItem.pubDate"
+              />
             </div>
-            <div
-              class="smallHeadline smallHeadline2lines"
-            >{{ $root.mediaPlayerItem.title }}</div>
+            <div class="smallHeadline smallHeadline2lines">
+              {{ $root.mediaPlayerItem.title }}
+            </div>
             <div class="contentBlock mt-2">
               <div
                 v-html="$root.mediaPlayerItem.description"
@@ -156,7 +200,11 @@
 
     <div
       class="audioItemList"
-      v-if="$root.mediaShowList && $root.mediaPlayerItem != null && !$root.mediaPlayer.isVideo"
+      v-if="
+        $root.mediaShowList &&
+        $root.mediaPlayerItem != null &&
+        !$root.mediaPlayer.isVideo
+      "
     >
       <PlayControllerAudio
         style="flex-grow: 0; flex-shrink: 0"
@@ -182,8 +230,10 @@
       v-touch:swipe.right="swipeRight"
       v-touch:swipe.left="swipeLeft"
     >
-      <v-window v-model="$store.state.fullScreenItemIndex"
-       class="fullScreenItemInner">
+      <v-window
+        v-model="$store.state.fullScreenItemIndex"
+        class="fullScreenItemInner"
+      >
         <v-window-item
           v-for="(item, index) in $store.state.fullScreenItems"
           :value="index"
@@ -211,6 +261,7 @@ import DateView from "../components/DateView";
 import db from "../database";
 import router from "../router";
 import moment from "moment";
+import config from "../config";
 
 import Vue from "vue";
 import Vue2TouchEvents from "vue2-touch-events";
@@ -228,10 +279,10 @@ export default {
     PlayControllerAudio,
     Share,
     FullScreenItem,
-    DateView
+    DateView,
   },
   props: {
-    headerType: null
+    headerType: null,
   },
   // beforeRouteUpdate(to, from, next) {
   //   this.$root.mediaShowList = false;
@@ -258,7 +309,10 @@ export default {
       console.log(
         "Item clicked " + eventInfo.item.title + " at rect " + eventInfo.rect
       );
-      this.$store.commit("setFullScreenItems", { items: this.filteredItems, activeIndex: this.filteredItems.indexOf(eventInfo.item) });
+      this.$store.commit("setFullScreenItems", {
+        items: this.filteredItems,
+        activeIndex: this.filteredItems.indexOf(eventInfo.item),
+      });
     },
 
     playItem(eventInfo) {
@@ -282,7 +336,13 @@ export default {
     },
 
     onClose() {
-      this.$logger.logClosePlayer(this.$root.mediaPlayerItem, (this.$root.mediaPlayerItem != null && this.$root.mediaPlayerItem.hasVideoAttachment()) ? "video" : "audio");
+      this.$logger.logClosePlayer(
+        this.$root.mediaPlayerItem,
+        this.$root.mediaPlayerItem != null &&
+          this.$root.mediaPlayerItem.hasVideoAttachment()
+          ? "video"
+          : "audio"
+      );
       this.$root.mediaShowList = false;
       this.$root.mediaPlayerDocked = false;
       //this.$root.mediaPlayerItem = null;
@@ -304,8 +364,15 @@ export default {
 
     onCloseFullscreen() {
       console.log("onCloseFullscreen()");
-      this.$store.commit("setFullScreenItems", { items: null, activeIndex: -1 });
-      if (!this.$root.mediaPlayerDocked && this.$root.mediaPlayer != null && this.$root.mediaPlayer.isPlaying) {
+      this.$store.commit("setFullScreenItems", {
+        items: null,
+        activeIndex: -1,
+      });
+      if (
+        !this.$root.mediaPlayerDocked &&
+        this.$root.mediaPlayer != null &&
+        this.$root.mediaPlayer.isPlaying
+      ) {
         this.$root.mediaPlayerDocked = true;
       }
     },
@@ -349,25 +416,21 @@ export default {
         this.currentHeaderTag.value.startsWith("saved_")
       ) {
         const self = this;
-        db.items.toArray().then(items => {
+        db.items.toArray().then((items) => {
           self.filteredItems = self.sortItemsOnPubDate(
             items
               .map(function itemObject(item) {
                 return ItemModel.fromString(item.item);
               })
-              .filter(function(i) {
+              .filter(function (i) {
                 return i.savedByUser != null;
               })
-              .filter(function(i) {
+              .filter(function (i) {
                 var saveDate = new Date(parseInt(i.savedByUser, 10));
                 if (self.currentHeaderTag.value == "saved_week") {
-                  return moment()
-                    .subtract(7, "days")
-                    .isBefore(saveDate);
+                  return moment().subtract(7, "days").isBefore(saveDate);
                 } else if (self.currentHeaderTag.value == "saved_month") {
-                  return moment()
-                    .subtract(1, "months")
-                    .isBefore(saveDate);
+                  return moment().subtract(1, "months").isBefore(saveDate);
                 }
                 return true;
               })
@@ -388,7 +451,7 @@ export default {
 
         // Filter out non-unique items!
         const guidmap = new Map();
-        const removeDuplicates = function(array, category) {
+        const removeDuplicates = function (array, category) {
           return array.filter((item) => {
             if (guidmap.has(item.guid)) {
               //console.log("Ignore duplicate: " + item.title);
@@ -407,14 +470,17 @@ export default {
         mainFeedItems = removeDuplicates(mainFeedItems, null);
         if (categoryItems != null && categoryItems.items != null) {
           categoryItems = Object.assign({}, categoryItems);
-          categoryItems.items = removeDuplicates(categoryItems.items, categoryItems.category);
+          categoryItems.items = removeDuplicates(
+            categoryItems.items,
+            categoryItems.category
+          );
         }
 
         var idxMainFeed = 0;
         var idxCategory = 0;
         var idxCategoryItem = 0;
         var ret = [];
-        const addMainItem = function(displayType) {
+        const addMainItem = function (displayType) {
           if (idxMainFeed < mainFeedItems.length) {
             const item = mainFeedItems[idxMainFeed];
             item.displayType = displayType;
@@ -424,13 +490,15 @@ export default {
             idxMainFeed += 1;
           }
         }.bind(this);
-        const addCategoryItem = function(displayType) {
+        const addCategoryItem = function (displayType) {
           if (categoryItems && idxCategoryItem < categoryItems.items.length) {
             const item = categoryItems.items[idxCategoryItem];
             item.displayType = displayType;
             item.categoryDisplay = categoryItems.category;
             ret.push(item);
             idxCategoryItem += 1;
+          } else {
+            addMainItem(displayType);
           }
         };
         addMainItem(1);
@@ -443,22 +511,28 @@ export default {
           addMainItem(0);
 
           // Any category to add?
-          if (idxMainFeed < mainFeedItems.length && idxCategory < 5) {
-            // Only if still main items
-            addCategoryItem(1);
-            addCategoryItem(2);
-            addCategoryItem(3);
+          addCategoryItem(1);
+          addCategoryItem(2);
+          addCategoryItem(3);
 
-            // Setup for next category
-            idxCategory++;
-            categoryItems = this.$store.state.currentFeedCategoriesWithItems[
-              idxCategory
-            ];
+          // Setup for next category
+          idxCategory++;
+          if (
+            idxCategory <
+            this.$store.state.currentFeedCategoriesWithItems.length
+          ) {
+            categoryItems =
+              this.$store.state.currentFeedCategoriesWithItems[idxCategory];
             if (categoryItems != null && categoryItems.items != null) {
               categoryItems = Object.assign({}, categoryItems);
-              categoryItems.items = removeDuplicates(categoryItems.items, categoryItems.category);
+              categoryItems.items = removeDuplicates(
+                categoryItems.items,
+                categoryItems.category
+              );
             }
             idxCategoryItem = 0;
+          } else {
+            categoryItems = null;
           }
         }
         this.filteredItems = ret;
@@ -468,7 +542,7 @@ export default {
       if (items == null) {
         return [];
       }
-      return items.sort(function(a, b) {
+      return items.sort(function (a, b) {
         if (a.pubDate == null) {
           return 1;
         } else if (b.pubDate == null) {
@@ -527,41 +601,46 @@ export default {
           this.$logger.logAudioListView();
         }
       }
-    }
+    },
   },
 
   filters: {
     videoItems(items) {
-      return items.filter(function(i) {
+      return items.filter(function (i) {
         return i.hasVideoAttachment();
       });
     },
     audioItems(items) {
-      return items.filter(function(i) {
+      return items.filter(function (i) {
         return i.hasAudioAttachment();
       });
-    }
+    },
   },
 
   watch: {
-    '$store.state.flavor'(ignoredvalue, ignoredoldValue) {
+    "$store.state.flavor"(ignoredvalue, ignoredoldValue) {
       this.updateHeader();
     },
-    headerType: function() {
+    headerType: function () {
       console.log("Header type changed to " + this.headerType);
       this.updateHeader();
     },
-    currentHeaderTag: function() {
+    currentHeaderTag: function () {
       console.log("Filter items");
       this.updateFilteredItems();
     },
     headerTagsCategories() {
       const val = this.headerTagsCategories;
-      if (this.headerType == "categories" && !this.currentHeaderTag && val && val.length > 0) {
+      if (
+        this.headerType == "categories" &&
+        !this.currentHeaderTag &&
+        val &&
+        val.length > 0
+      ) {
         // Set default
         this.currentHeaderTag = val[0];
       }
-    }
+    },
   },
 
   created() {
@@ -598,21 +677,21 @@ export default {
     console.log("Home mounted, start listening!");
     this.thisRouteName = this.$route.name;
     this.storeWatchObject = this.$store.watch(
-      state => state.currentFeedItems,
+      (state) => state.currentFeedItems,
       // eslint-disable-next-line
       (newValue, oldValue) => {
         this.updateFilteredItems();
       }
     );
     this.storeWatchObject2 = this.$store.watch(
-      state => state.currentFeedCategoriesWithItems,
+      (state) => state.currentFeedCategoriesWithItems,
       // eslint-disable-next-line
       (newValue, oldValue) => {
         this.updateFilteredItems();
       }
     );
     this.storeWatchObject3 = this.$store.watch(
-      state => state.fullScreenItemIndex,
+      (state) => state.fullScreenItemIndex,
       // eslint-disable-next-line
       (newValue, oldValue) => {
         this.enableDisableScrolling();
@@ -649,18 +728,18 @@ export default {
       headerTagsSaved: [
         { name: this.$t("all"), value: "saved_all" },
         { name: this.$t("this_week"), value: "saved_week" },
-        { name: this.$t("this_month"), value: "saved_month" }
+        { name: this.$t("this_month"), value: "saved_month" },
       ],
       headerScrollFraction: 1,
       headerTitle: null,
       currentHeaderTag: null,
-      videoPlayerId: 'videoPlaceholderController' + this.$route.name
+      videoPlayerId: "videoPlaceholderController" + this.$route.name,
     };
   },
   computed: {
     cssProps() {
       return {
-        "--v-header-scroll-fraction": this.headerScrollFraction
+        "--v-header-scroll-fraction": this.headerScrollFraction,
       };
     },
     useFadingAppBar() {
@@ -677,8 +756,8 @@ export default {
         }
       }
       return cats;
-    }
-  }
+    },
+  },
 };
 </script>
 

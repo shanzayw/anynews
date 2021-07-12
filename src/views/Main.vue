@@ -1,7 +1,10 @@
 <template>
   <div>
     <div
-      :class="{ 'contentView': true, 'contentViewOverflowing': ($store.state.fullScreenItems != null) }"
+      :class="{
+        contentView: true,
+        contentViewOverflowing: $store.state.fullScreenItems != null,
+      }"
       style="z-index: 3"
     >
       <transition :name="transitionName">
@@ -31,10 +34,21 @@
       mandatory
       grow
     >
-      <v-btn v-blur class="navButton" :to="{name:'home'}" @click="logNav('home')">
+      <v-btn
+        v-blur
+        class="navButton"
+        :to="{ name: 'home' }"
+        @click="logNav('home')"
+      >
         <v-icon v-blur>$vuetify.icons.logo</v-icon>
       </v-btn>
-      <v-btn v-if="enableCategories" v-blur class="navButton" to="categories" @click="logNav('categories')">
+      <v-btn
+        v-if="showCategoriesTab"
+        v-blur
+        class="navButton"
+        to="categories"
+        @click="logNav('categories')"
+      >
         <v-icon>$vuetify.icons.categories</v-icon>
       </v-btn>
       <v-btn v-blur class="navButton" to="saved" @click="logNav('saved')">
@@ -56,17 +70,25 @@ export default {
   name: "Main",
   components: {
     SharedMediaPlayer,
-    DockedPlayer
+    DockedPlayer,
   },
   data() {
     return {
-      transitionName: null
+      transitionName: null,
     };
   },
   computed: {
-    enableCategories() {
-      return config.enableCategories;
-    }
+    showCategoriesTab() {
+      if (!config.enableCategories) {
+        return false;
+      }
+      var flavor = config.flavors[this.$store.state.flavor || "default"];
+      console.log("Flavor", flavor);
+      return (
+        flavor.services[0].categories &&
+        flavor.services[0].categories.length > 0
+      );
+    },
   },
   watch: {
     $route(to, from) {
@@ -76,7 +98,7 @@ export default {
       if (!to.query || !to.query.nodockplayer) {
         this.$root.mediaShowList = false;
       }
-    }
+    },
   },
 
   methods: {
@@ -101,15 +123,20 @@ export default {
     onMaximizeDockedPlayer(event) {
       // If full screen mode, close that to show list with currently playing
       if (this.$store.state.fullScreenItems != null) {
-        this.$store.commit("setFullScreenItems", { items: null, activeIndex: -1 });
+        this.$store.commit("setFullScreenItems", {
+          items: null,
+          activeIndex: -1,
+        });
       }
 
       const { itemRoute } = event;
       this.$root.mediaShowList = true;
       this.$root.mediaPlayerDocked = false;
-      this.$router.replace({ name: itemRoute.name, query: { nodockplayer:true } }).catch(ignoredErr => {});
-    }
-  }
+      this.$router
+        .replace({ name: itemRoute.name, query: { nodockplayer: true } })
+        .catch((ignoredErr) => {});
+    },
+  },
 };
 </script>
 
@@ -210,7 +237,6 @@ export default {
     opacity: 0;
   }
 }
-
 </style>
 
 <style>
