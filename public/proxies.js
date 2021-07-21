@@ -18,6 +18,9 @@
         }
 
         getCurrentProxy = function () {
+            if (this.idxCurrentProxy >= this.proxies.length || this.idxCurrentProxy < 0) {
+                return null;
+            }
             return this.ensureTrailingSlash(this.proxies[this.idxCurrentProxy]);
         }
 
@@ -35,13 +38,14 @@
 
         setRandomProxy() {
             this.idxCurrentProxy = Math.floor(Math.random() * Math.floor(this.proxies.length));
-            console.log("RANDOM PROXY ----> " + this.getCurrentProxy());
         }
 
         moveToNextProxy = function () {
-            this.idxCurrentProxy = (this.idxCurrentProxy + 1) % this.proxies.length;
-            console.log("NEXT PROXY ----> " + this.getCurrentProxy());
-            return this.getCurrentProxy();
+            if (this.proxies.length > 0) {
+                this.idxCurrentProxy = (this.idxCurrentProxy + 1) % this.proxies.length;
+                return this.getCurrentProxy();
+            }
+            return null;
         }
 
         ensureTrailingSlash(url) {
