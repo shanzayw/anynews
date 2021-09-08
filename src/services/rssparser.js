@@ -174,7 +174,11 @@ export default class RSSParser {
 
         // Make array if not already
         if (!Array.isArray(itemParentElement.item)) {
-            itemParentElement.item = [itemParentElement.item];
+            if (!itemParentElement.item) {
+                itemParentElement.item = [];
+            } else {
+                itemParentElement.item = [itemParentElement.item];
+            }
         }
 
         itemParentElement.item.forEach(i => {
