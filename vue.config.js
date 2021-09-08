@@ -170,21 +170,42 @@ module.exports = {
                 // Do whatever you want...
                 console.log("********* Processing icons **************");
                 const iconTemplate = "<template>SVGDATA</template>\n<script>\nexport default { name: 'ICONNAME'};\n</script>\n<style scoped>\npath {fill: currentColor !important;}\n</style>\n";
+                const iconTemplateImg = "<template><img src='IMAGEPATH'/></template>\n<script>\nexport default { name: 'ICONNAME'};\n</script>\n<style scoped>\npath {fill: currentColor !important;}\n</style>\n";
                 fs.readdirSync('./src/assets/icons').forEach(file => {
-                    fs.readFile('./src/assets/icons/' + file, 'utf8', function (err, data) {
-                        if (err) {
-                            return console.log(err);
-                        }
+                    if (file.endsWith(".svg")) {
+                        fs.readFile('./src/assets/icons/' + file, 'utf8', function (err, data) {
+                            if (err) {
+                                return console.log(err);
+                            }
+                            var iconName = file.split('.')[0];
+
+                            var result = iconTemplate.replace(/SVGDATA/g, data);
+                            result = result.replace(/ICONNAME/g, iconName);
+
+                            // Remove possible <?xml tag
+                            result = result.replace(/<\?xml[^\?]*\?>/g, "");
+
+                            // Add icon specific class name
+                            result = result.replace(/<svg/g, "<svg class=\"icon-" + iconName + "\"");
+                            const outFileName = "Icon" + iconName.substring(0, 1).toUpperCase() + iconName.substring(1) + ".vue";
+                            fs.readFile('./src/icons/' + outFileName, 'utf8', function (err, oldData) {
+                                if (!err && oldData == result) {
+                                    // No change
+                                    return;
+                                }
+                                fs.writeFile('./src/icons/' + outFileName, result, 'utf8', function (err) {
+                                    if (err) return console.log(err);
+                                });
+                            });
+                        });
+                    } else if (file.endsWith(".jpg") || file.endsWith(".png")) {
                         var iconName = file.split('.')[0];
 
-                        var result = iconTemplate.replace(/SVGDATA/g, data);
+                        var result = iconTemplateImg.replace(/IMAGEPATH/g, "../assets/icons/" + file);
                         result = result.replace(/ICONNAME/g, iconName);
 
-                        // Remove possible <?xml tag
-                        result = result.replace(/<\?xml[^\?]*\?>/g, "");
-
                         // Add icon specific class name
-                        result = result.replace(/<svg/g, "<svg class=\"icon-" + iconName + "\"");
+                        result = result.replace(/<img/g, "<img class=\"icon-" + iconName + "\"");
                         const outFileName = "Icon" + iconName.substring(0, 1).toUpperCase() + iconName.substring(1) + ".vue";
                         fs.readFile('./src/icons/' + outFileName, 'utf8', function (err, oldData) {
                             if (!err && oldData == result) {
@@ -195,7 +216,7 @@ module.exports = {
                                 if (err) return console.log(err);
                             });
                         });
-                    });
+                    }
                 });
                 callback(); // don't call it if you do want to stop compilation
             }, ['beforeCompile']),

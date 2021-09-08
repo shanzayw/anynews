@@ -5,8 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "npm run generate_icons && npm run generate_splash && vue-cli-service build",
-    "generate_icons": "npx vue-pwa-asset-generator -a ./src/assets/icons/logo.svg -o ./public/img/icons && cp ./public/img/icons/favicon.ico ./public/",
-    "generate_splash": "./node_modules/pwa-asset-generator/bin/cli ./src/assets/icons/logo.svg --padding '0 max(20vw,calc(50vw - 150px))' ./public/img/splash",
+    "generate_icons": "npx vue-pwa-asset-generator -a $(set -- ./src/assets/icons/logo.*; echo \"$1\") -o ./public/img/icons && cp ./public/img/icons/favicon.ico ./public/",
+    "generate_splash": "./node_modules/pwa-asset-generator/bin/cli $(set -- ./src/assets/icons/logo.*; echo \"$1\") --padding '0 max(20vw,calc(50vw - 150px))' ./public/img/splash",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

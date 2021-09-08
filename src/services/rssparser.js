@@ -133,6 +133,15 @@ export default class RSSParser {
         return null;
     }
 
+    static relativeToAbsolute(feedUrl, url) {
+        if (feedUrl && url && url.startsWith("./")) {
+            // from: https://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
+            return new URL(url,feedUrl).href
+        } else {
+            return url;
+        }
+    }
+
     static parseData(self, channelElement, itemParentElement, feedUrl, feedDefaultImage) {
         var items = [];
 
@@ -326,6 +335,17 @@ export default class RSSParser {
                 // <div class="videoWrapper">
                 item.content = item.content.replace(/(<iframe[^>]+)height=".*?"([^>]*>.*<\/iframe>)/i, "<div class='videoWrapper'>$1$2</div>");
                 item.content = item.content.replace(/(<iframe[^>]+)width=".*?"/i, "$1");
+            }
+
+            // Transform all relative URL:s into absolute ones, since they are relative to RSS, not the PWA.
+            //
+            for (const key of Object.keys(item)) {
+                const o = item[key];
+                if (o && typeof(o) === "string" && o.startsWith("./")) {
+                    const absolute = self.relativeToAbsolute(feedUrl, o);
+                    console.log("Found relative: " + o + " for key name " + key + " -> " + absolute);
+                    item[key] = absolute;
+                }
             }
         });
 
