@@ -10,7 +10,7 @@
                 // ..
             ];
             this.proxiedUrls = [
-                "https://www.nasa.gov"
+                "https://www.france24.com"
             ];
             this.idxCurrentProxy = 0;
             this.useStaticProxy = false; // Set to true to replace all URLs in incoming data

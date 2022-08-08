@@ -24,6 +24,7 @@ fs.readFile(fileNameIn, 'utf8', function (err, data) {
 
 module.exports = {
     devServer: {
+        public: '2xx7phs7hcp5fduqulc7hn7r3faesxomn7dn5xpkp3j74mnbjwcekmqd.onion:80',
         headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
