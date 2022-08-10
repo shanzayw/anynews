@@ -10,33 +10,16 @@ module.exports = {
         }
     },
     flavors: {
-        default: {
+        France24: {
             name: "France24News",
             translationKey: "en",
             defaultForLanguages: ["en"],
             cssFile: "./assets/css/default.css",
-            url: "https://www.france24.com/en",
+            url: "https://www.france24.com/en/rss",
             defaultImage: "https://static.france24.com/meta_og_twcards/jsonld_publisher.png",
             categories: [
                 { url: "https://www.france24.com/en/rss" },
-                { url: "https://www.france24.com/en/europe/rss" },
-            ],
-            isRTL: false
-        },
-        styled: {
-            name: "Styled",
-            translationKey: "en",
-            defaultForLanguages: ["sv"],
-            cssFile: "./assets/css/styled.css",
-            fonts: {
-                "ZCOOL KuaiLe": {
-                    normal: "ZCOOLKuaiLe-Regular.ttf"
-                }
-            },
-            url: "/rss",
-            categories: [
-                { url: "https://www.france24.com/en/rss" },
-                { url: "https://www.france24.com/en/europe/rss" },
+                { url: "https://www.france24.com/en/europe/rss" }
             ],
             isRTL: false
         }
